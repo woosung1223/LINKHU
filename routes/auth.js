@@ -6,7 +6,7 @@ const { query } = require('express');
 const { default: mongoose } = require('mongoose');
 const router = express.Router();
 
-router.post('/signup', async function(req, res) {
+router.post('/signup', async (req, res) => {
     try {
     // 회원가입 로직
     const paramId = req.body.id;
@@ -14,15 +14,15 @@ router.post('/signup', async function(req, res) {
     const paramEmail = req.body.email;
     const paramName = req.body.userName;
 
-    const salt = Math.round((new Date().valueOf() * Math.random())) + "";
-    const hashPassword = crypto.createHash("sha512").update(paramPw + salt).digest("hex");
+    const salt = Math.round((new Date().valueOf() * Math.random())) + ""; // salt 값 생성
+    const hashPassword = crypto.createHash("sha512").update(paramPw + salt).digest("hex"); // sha512 사용 password 암호화
 
-    const query1 = await User.find({userId : paramId}); // unique한 ID 값을 통해 해당 유저가 이미 있는지 Read
-    const query2 = await User.find({email : paramEmail}); // unique한 email 값을 통해 해당 유저가 이미 있는지 Read
-    if (query1.length) { // ID 가 이미 존재한다면 
+    const idQuery = await User.find({userId : paramId}); // unique한 ID 값을 통해 해당 유저가 이미 있는지 Read
+    const emailQuery = await User.find({email : paramEmail}); // unique한 email 값을 통해 해당 유저가 이미 있는지 Read
+    if (idQuery.length) { // ID 가 이미 존재한다면 
         res.send('user already exists!');
     }
-    else if (query2.length) { // email 이 이미 사용중이라면
+    else if (emailQuery.length) { // email 이 이미 사용중이라면
         res.send('email already used!');
     }
     else { // 회원가입 (Create)
@@ -45,26 +45,38 @@ router.post('/signup', async function(req, res) {
 }
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
+    try {
     const paramId = req.body.id;
     const paramPw = req.body.password;
-
-    if(req.session.user) { // 유저 정보가 존재한다면 # 수정 필요
-        const hashPassword = crypto.createHash('sha512').update(paramPw + req.session.user.salt).digest("hex");
-        // console.log(paramId, paramPw);
-        if (paramId == req.session.user.userId && 
-            hashPassword == req.session.user.userPassword) {
+    console.log(req.session.userId);
+    if(req.session.userId === undefined) { // 세션이 만료되었거나 없다면
+        const id_query = await User.find({userId : paramId});
+        if(id_query.length) { // 아이디가 존재한다면
+            const id_pwd_query = await User.find({userId : paramId}, {password : 1, salt : 1}); // 구조분해 할당
+            const {password, salt} = id_pwd_query[0];
+            const hashPassword = crypto.createHash('sha512').update(paramPw + salt).digest("hex");
+            
+            if (hashPassword == password) { // db password와 일치한다면
                 req.session.is_logined = true;
+                req.session.userId = paramId;
                 console.log('login success, ID : ', paramId);
-                res.send('로그인 성공!');
-                // res.redirect('/group');      
+                res.send('로그인 성공! 세션 드림');
             }
-        else {
-            res.send('비밀번호가 맞지 않아요');
+            else { // 비밀번호가 일치하지 않는다면 
+                res.send('비밀번호 불일치!');
+            }
         }
-    } else {
-        res.send('회원가입을 먼저 하세요!');
+        else {
+            res.send('아이디가 존재하지 않아용');
+        }
     }
+    else { // 이미 세션 있는 경우
+        res.send('이미 세션이 있어요');
+    }
+} catch(err) {
+    console.error(err);
+}
 });
 
 router.get('/logout', async function (req, res) {

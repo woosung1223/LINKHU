@@ -4,6 +4,7 @@ const path = require('path');
 const morgan = require('morgan');
 const session = require('express-session');
 const mongoose = require('mongoose');
+const mongostore = require('connect-mongo');
 const mongo_connect = require('./schemas/index'); 
 require("dotenv").config(); // .env 
 
@@ -23,10 +24,12 @@ app.use(
         secret: process.env.SessionSecret,
         resave : false,
         saveUninitialized : false,
-        // store : require('mongoose-session')(mongoose),
+        store : mongostore.create({mongoUrl: `mongodb://${process.env.MONGOID}:${process.env.MONGOPWD}@localhost:27017/admin`, dbName : 'LINKHU'}),
         cookie : {
             httpOnly : true,
-            cookie : {maxAge:(3.6e+6) * 1} // 1시간 뒤 만료 
+            cookie : {
+                maxAge:3600 * 60, 
+            } // 1시간 뒤 만료 
         }
     })
 )
@@ -34,7 +37,6 @@ app.use(
 // routers
 const tgwingRouter = require('./routes/group'); // 동아리
 const authRouter = require('./routes/auth'); // 인증 
-const { connect } = require('http2');
 
 app.use('/group', tgwingRouter); 
 app.use('/auth', authRouter);

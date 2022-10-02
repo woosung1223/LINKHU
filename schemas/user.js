@@ -20,6 +20,9 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    salt: {
+        type: String,
+    }
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -49,7 +49,6 @@ router.post('/login', async (req, res) => {
     try {
     const paramId = req.body.id;
     const paramPw = req.body.password;
-    console.log(req.session.userId);
     if(req.session.userId === undefined) { // 세션이 만료되었거나 없다면
         const id_query = await User.find({userId : paramId});
         if(id_query.length) { // 아이디가 존재한다면
@@ -81,7 +80,7 @@ router.post('/login', async (req, res) => {
 
 router.get('/logout', async function (req, res) {
     try {
-        if (req.session) {
+        if (req.session.userId !== undefined) { // 세션이 존재한다면
             await req.session.destroy((err) => {
                 if (err) {
                     console.log(err);

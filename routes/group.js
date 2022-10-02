@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
+router.get('/', (req, res) => {
+    res.send('this is group home page');
+});
+
 router.get('/:groupname', (req, res) => {
     res.send(`this is ${req.params.groupname} page.`);
 });

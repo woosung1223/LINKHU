@@ -2,6 +2,9 @@
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
+const session = require('express-session');
+const fileStore = require('session-file-store')(session);
+require("dotenv").config(); // .env 
 
 const app = express();
 // environment setting
@@ -12,7 +15,18 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({extended : false }));
-
+app.use(
+    session({
+        httpOnly : true,
+        secret: process.env.SessionSecret,
+        resave : false,
+        saveUninitialized : false,
+        store : new fileStore(),
+        cookie : {
+            httpOnly : true,
+        }
+    })
+)
 
 // routers
 const tgwingRouter = require('./routes/group'); // 동아리

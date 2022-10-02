@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/woosung1223/LINKHU#readme",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "express": "^4.18.1",
-    "morgan": "^1.10.0"
+    "express-session": "^1.17.3",
+    "morgan": "^1.10.0",
+    "session-file-store": "^1.5.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

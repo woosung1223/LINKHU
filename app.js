@@ -3,12 +3,14 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const session = require('express-session');
-const fileStore = require('session-file-store')(session);
+const mongoose = require('mongoose');
+const mongo_connect = require('./schemas/index'); 
 require("dotenv").config(); // .env 
 
 const app = express();
 // environment setting
 app.set('port', process.env.PORT || 3001);
+mongo_connect();
 
 // middlewares
 app.use(morgan('dev'));
@@ -21,9 +23,10 @@ app.use(
         secret: process.env.SessionSecret,
         resave : false,
         saveUninitialized : false,
-        store : new fileStore(),
+        // store : require('mongoose-session')(mongoose),
         cookie : {
             httpOnly : true,
+            cookie : {maxAge:(3.6e+6) * 1} // 1시간 뒤 만료 
         }
     })
 )
@@ -31,6 +34,7 @@ app.use(
 // routers
 const tgwingRouter = require('./routes/group'); // 동아리
 const authRouter = require('./routes/auth'); // 인증 
+const { connect } = require('http2');
 
 app.use('/group', tgwingRouter); 
 app.use('/auth', authRouter);

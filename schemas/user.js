@@ -7,7 +7,7 @@ const userSchema = new Schema({
         required: true,
     },
     userId: {
-        type: Number,
+        type: String,
         required: true,
         unique: true,
     },
@@ -15,6 +15,10 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
     },
 });
 

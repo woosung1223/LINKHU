@@ -7,8 +7,6 @@ const connect = () => {
 
     mongoose.connect(`mongodb://${process.env.MONGOID}:${process.env.MONGOPWD}@localhost:27017/admin`, {
         dbName: 'LINKHU',
-        userNewUrlParser : true,
-        useCreateIndex : true,
     }, (error) => {
         if (error) {
             console.log(error);

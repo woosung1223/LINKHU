@@ -86,10 +86,11 @@ router.get('/logout', async function (req, res) {
                     console.log(err);
                 }
                 else {
-                    res.redirect('/group');
+                    res.clearCookie('connect.sid');
+                    res.send('logout completed');
                 }
             });
-        }
+        } 
     }
     catch (e) {
         console.log(e);

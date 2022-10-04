@@ -3,15 +3,12 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const session = require('express-session');
-const mongoose = require('mongoose');
 const mongostore = require('connect-mongo');
-const mongo_connect = require('./schemas/index'); 
 require("dotenv").config(); // .env 
 
 const app = express();
 // environment setting
 app.set('port', process.env.PORT || 3001);
-mongo_connect();
 
 // middlewares
 app.use(morgan('dev'));
@@ -24,11 +21,11 @@ app.use(
         secret: process.env.SessionSecret,
         resave : false,
         saveUninitialized : false,
-        store : mongostore.create({mongoUrl: `mongodb://${process.env.MONGOID}:${process.env.MONGOPWD}@localhost:27017/admin`, dbName : 'LINKHU'}),
+        store : mongostore.create({mongoUrl: process.env.DB_URL, dbName : 'LINKHU'}),
         cookie : {
             httpOnly : true,
             cookie : {
-                maxAge:3600 * 60, 
+                maxAge:3600, 
             } // 1시간 뒤 만료 
         }
     })

@@ -1,14 +1,13 @@
 // include packages
-const express = require('express');
-const path = require('path');
-const morgan = require('morgan');
-const session = require('express-session');
-const mongostore = require('connect-mongo');
-require("dotenv").config(); // .env 
-
+import express from 'express';
+import path from 'path';
+import morgan from 'morgan';
+import session from 'express-session';
+import mongostore from 'connect-mongo';
+const {default : env} = require('./config/index');
 const app = express();
 // environment setting
-app.set('port', process.env.PORT || 3001);
+
 
 // middlewares
 app.use(morgan('dev'));
@@ -18,10 +17,10 @@ app.use(express.urlencoded({extended : false }));
 app.use(
     session({
         httpOnly : true,
-        secret: process.env.SessionSecret,
+        secret: env.sessionSecret,
         resave : false,
         saveUninitialized : false,
-        store : mongostore.create({mongoUrl: process.env.DB_URL, dbName : 'LINKHU'}),
+        store : mongostore.create({mongoUrl: env.dbUrl, dbName : 'LINKHU'}),
         cookie : {
             httpOnly : true,
             cookie : {
@@ -30,10 +29,9 @@ app.use(
         }
     })
 )
-
 // routers
-const tgwingRouter = require('./routes/group'); // 동아리
-const authRouter = require('./routes/auth'); // 인증 
+const {default : tgwingRouter} = require('./api/routes/group'); // 동아리
+const {default : authRouter} = require('./api/routes/auth'); // 인증 
 
 app.use('/group', tgwingRouter); 
 app.use('/auth', authRouter);
@@ -48,12 +46,12 @@ app.use((req, res, next) => {
 // error handler
 app.use((err, req, res, next) => {
     res.locals.message = err.message;
-    res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
+    res.locals.error = env.nodeEnv !== 'production' ? err : {};
     res.status(err.status || 500);
     res.render('error');
 });
 
 // listener
-app.listen(app.get('port'), () => {
-    console.log(`Server listening ${app.get('port')}`);
+app.listen(env.port, () => {
+    console.log(`Server listening ${env.port}`);
 });

@@ -1,4 +1,4 @@
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 dotenv.config();
 
 export default {
@@ -6,4 +6,4 @@ export default {
     sessionSecret : process.env.SessionSecret,
     nodeEnv : process.env.NODE_ENV,
     dbUrl : process.env.DB_URL,
-}
+};

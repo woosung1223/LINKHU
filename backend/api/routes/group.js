@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -13,4 +13,4 @@ router.get('/:groupname/:id', (req, res) => {
     res.send(`this is ${req.params.groupname} group ${req.params.id} id page.`);
 });
 
-module.exports = router;
+export default router;

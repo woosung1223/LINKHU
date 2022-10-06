@@ -28,9 +28,10 @@ export default async ({ app }) => {
   // routers
   const { default: tgwingRouter } = require("../api/routes/group"); // 동아리
   const { default: authRouter } = require("../api/routes/auth"); // 인증
-
+  const { default: editRouter } = require("../api/routes/edit"); // 회원정보 수정
   app.use("/group", tgwingRouter);
   app.use("/auth", authRouter);
+  app.use("/edit", editRouter);
 
   // 404 handler
   app.use((req, res, next) => {

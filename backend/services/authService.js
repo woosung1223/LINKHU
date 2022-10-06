@@ -53,10 +53,10 @@ const AuthService = {
         }
 
     },
-    Logout : async function(userAttribute) {
-        // userAttribute : 유저 정보를 담고 있는 객체
+    // Logout : async function(userAttribute) {
+    //     // userAttribute : 유저 정보를 담고 있는 객체
 
-    }
+    // }
 }
 
 export default AuthService;

@@ -1,6 +1,6 @@
 import express from 'express';
 import AuthService from '../../services/authService';
-import SessionMiddleware from '../middlewares/sessionMiddleware';
+import SessionMiddleware from '../middlewares/sessionMW';
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.post('/login', SessionMiddleware, async (req, res) => {
             const {code, message} = await AuthService.Login(userDTO);
             
             if (code == 1) {
-                req.session.is_logined = true;
+                req.session.isLogined = true;
                 req.session.userId = userDTO.id;
             }
             res.send(message);

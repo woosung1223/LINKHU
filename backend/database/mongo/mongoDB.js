@@ -1,7 +1,4 @@
-const mongo_connect = require('./connectingDB');
-const User = require('./model/User');
-mongo_connect();
-
+const User = require("./model/User");
 //mongoDatabase의 경우 기존 mongoose랑 형태가 비슷함 후에 다른 db로 바꿀 경우 해당 method안의 내용을 바꿈
 const DatabaseMth = {
   //

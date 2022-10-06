@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
+import env from "../../config/index";
 
-const connect = () => {
+function ConnectingMongoDatabase() {
   if (process.env.NODE_ENV == "dev") {
     mongoose.set("debug", true);
   }
 
   mongoose.connect(
-    process.env.DB_URL,
+    env.dbUrl,
     {
       dbName: "LINKHU",
     },
@@ -14,18 +15,16 @@ const connect = () => {
       if (error) {
         console.log(error);
       } else {
-        console.log("Mongo DB connected");
+        console.log("Mongo Dababase connected");
       }
     }
   );
-};
+  mongoose.connection.on("error", (error) => {
+    console.error("Mongo DB error occured", error);
+  });
+  mongoose.connection.on("disconnected", () => {
+    console.error("mongoDB disconnected, connecting...");
+  });
+}
 
-mongoose.connection.on("error", (error) => {
-  console.error("Mongo DB error occured", error);
-});
-mongoose.connection.on("disconnected", () => {
-  console.error("mongoDB disconnected, connecting...");
-  connect();
-});
-
-module.exports = connect;
+export default ConnectingMongoDatabase;

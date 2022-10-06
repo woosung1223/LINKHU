@@ -5,11 +5,11 @@ const router = express.Router();
 
 router.post("/signup", async (req, res) => {
   try {
-    const { name, userId, email, password } = req.body;
-    const userDTO = { userName: name, id: userId, email, password };
+    const userDTO = req.body;
     const { message } = await AuthService.SignUp(userDTO);
     console.log(message);
     res.send(message);
+    g;
   } catch (e) {
     console.error(e);
   }

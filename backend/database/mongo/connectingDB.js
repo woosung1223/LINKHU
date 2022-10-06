@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-import env from "../../config/index";
+const {default : env} = require("../../config/index");
 
 function ConnectingMongoDatabase() {
-  if (process.env.NODE_ENV == "dev") {
+  if (env.NODE_ENV == "dev") {
     mongoose.set("debug", true);
   }
 

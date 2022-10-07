@@ -19,12 +19,13 @@ export default async ({ app }) => {
       store: seesionAdapter("mongo"),
       cookie: {
         httpOnly: true,
-        cookie: {
-          maxAge: 3600,
+        cookie: { 
+          maxAge: 1000 * 60 * 60, // 1시간
         }, // 1시간 뒤 만료
       },
     })
   );
+
   // routers
   const { default: tgwingRouter } = require("../api/routes/group"); // 동아리
   const { default: authRouter } = require("../api/routes/auth"); // 인증
@@ -32,7 +33,7 @@ export default async ({ app }) => {
   app.use("/group", tgwingRouter);
   app.use("/auth", authRouter);
   app.use("/edit", editRouter);
-
+  
   // 404 handler
   app.use((req, res, next) => {
     const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);

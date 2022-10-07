@@ -1,6 +1,6 @@
 import response from '../../config/response';
 
-async function sessionCheckMiddleware(req, res, next) {
+function sessionCheckMiddleware(req, res, next) {
     if (req.session.isLogined == true) {
         next();
     }

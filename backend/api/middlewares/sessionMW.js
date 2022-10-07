@@ -1,4 +1,4 @@
-async function SessionMiddleware(req, res, next) {
+function SessionMiddleware(req, res, next) {
     // session validation check middleware
     try {
         if (req.method == 'POST') { // login인 경우

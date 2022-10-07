@@ -8,6 +8,7 @@ function SessionAdapter(session) {
     CurrentSession = mongostore.create({
       mongoUrl: env.dbUrl,
       dbName: "LINKHU",
+      ttl: 3600, // 1시간 유효
       
     });
   }

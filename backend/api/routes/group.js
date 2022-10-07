@@ -1,4 +1,5 @@
 import express from 'express';
+import sessionCheckMiddleware from '../middlewares/sessionCheckMW';
 const router = express.Router();
 
 router.get('/', sessionCheckMiddleware, (req, res) => {

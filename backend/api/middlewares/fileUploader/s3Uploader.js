@@ -5,8 +5,8 @@ import env from "../../../config/index";
 
 const s3 = new aws.S3({
   credentials: {
-    accessKeyId: env.awsId,
-    secretAccessKey: env.awsSecret,
+    accessKeyId: env.AwsId,
+    secretAccessKey: env.AwsPw,
     region: "ap-northeast-2",
   },
 });

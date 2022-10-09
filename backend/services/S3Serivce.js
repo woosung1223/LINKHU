@@ -1,5 +1,5 @@
 import aws from "aws-sdk";
-import env from "../../config/index";
+import env from "../config/index";
 
 const s3 = new aws.S3({
   credentials: {
@@ -24,6 +24,7 @@ const AccessS3 = {
       })
       .catch((error) => {
         console.log("faile data is :", error);
+        return false;
       });
   },
 };

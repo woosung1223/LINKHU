@@ -22,6 +22,7 @@ const AuthService = {
                     userId : userAttribute.id,
                     email : userAttribute.email,
                     password : userAttribute.password,
+                    imageLoc : "",
                 });
                 if (CreateResult) {
                     return response.SUCCESS;

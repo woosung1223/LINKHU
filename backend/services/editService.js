@@ -32,12 +32,18 @@ const editService = {
             const new_location = userAttribute.baseUrl;
             // s3 update 로직 
             // 기존 이미지 데이터 삭제
-            const user = await Database.getUserbyId(userId)[0];
-            const old_location = user.location;
-            const updateResult = await Database.updateUserById(userId, {location : new_location});
-            const deleteResult = await s3.DeleteS3file(old_location);
+            const user = await Database.getUserbyId(userId);
+            const old_location = user.imageLoc;
+            const updateResult = await Database.updateUserById(userId, {imageLoc : new_location});
+            if (old_location !== undefined) {
+                // 이미지를 처음 등록할 때가 아니라면
+                const deleteResult = await s3.DeleteS3file(old_location);
+                if (deleteResult === false) {
+                    return response.INTERNAL_ERR;
+                }
+            }
             
-            if (updateResult !== null && deleteResult !== false) {
+            if (updateResult !== null) {
                 // 성공
                 return response.SUCCESS;
             }

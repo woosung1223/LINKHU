@@ -44,6 +44,31 @@ const DatabaseMth = {
     return user;
   },
 
+  //User의 정보를 기본키인 id를 통해서 반환 받는 함수
+  //성공시 message 내용이 포함된 User 데이터를 받고 실패시 null값을 반환한다
+  getUserAndMessagebyId: async function (Id) {
+    try {
+      const user = await User.findById(Id)
+        .populate("sendmessage")
+        .populate("receivemessage");
+      console.log("getUserbyId user is : ", user);
+      return user;
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  },
+  //필드값과 데이터를 받고 field에 해당 data를 가지는 데이터가 있으면 Message가 포함된 데이터를 배열에 넣은 user데이터들 반환
+  //만약 없을 시 빈 array 반환
+  getAndMessagebyField: async function (field, data) {
+    const query = {};
+    query[field] = data;
+    const user = await User.find(query)
+      .populate("sendmessage")
+      .populate("receivemessage");
+    return user;
+  },
+
   //-------------------------------------------------------------------------
   //-------------------------------------------------------------------------
   //

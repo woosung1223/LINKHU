@@ -78,6 +78,7 @@ const StackMethod = {
   //CRUD - Delete
   //
 
+  //stack id와  userid를 받아 해당 유저를 stack에서 삭제한다
   DeleteMember: async function (stackId, userId) {
     try {
       const stack = await Stack.findById(stackId);

@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon"
+    "start": "nodemon",
+    "Stacktest": "babel-node ./database/Stacktest"
   },
   "repository": {
     "type": "git",

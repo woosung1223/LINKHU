@@ -81,15 +81,13 @@ const StackMethod = {
   DeleteMember: async function (stackId, userId) {
     try {
       const stack = await Stack.findById(stackId);
-      if (stack.menti.find((memeber) => memeber === userId)) {
-        console.log("menti detected");
+      if (stack.menti.find((memeber) => memeber == userId)) {
         const Mentifilter = stack.menti.filter(function (data) {
           return String(data) !== String(userId);
         });
         stack.menti = Mentifilter;
       }
-      if (stack.mento.find((memeber) => memeber === userId)) {
-        console.log("mento detected");
+      if (stack.mento.find((memeber) => memeber == userId)) {
         const Mentofilter = stack.mento.filter(function (data) {
           return String(data) !== String(userId);
         });

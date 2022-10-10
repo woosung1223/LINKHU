@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+console.log("key is :", process.env.DB_URL);
+
 export default {
   port: process.env.PORT,
   sessionSecret: process.env.SessionSecret,

@@ -7,10 +7,8 @@ const DatabaseMth = {
 
   //유저의 정보를 userData를 통해서 받고 DB에 저장한다. 성공시 만들어진 data의 ID를 반환하며 실패시 false를 반환한다.
   CreateUser: async function (userData) {
-    const result = true;
     try {
       const user = await User.create(userData);
-      console.log("Making new User is success");
       return user._id.toString();
     } catch (error) {
       console.log("Making new User is fail in CreateUser");
@@ -28,7 +26,6 @@ const DatabaseMth = {
   getUserbyId: async function (Id) {
     try {
       const user = await User.findById(Id);
-      console.log("getUserbyId user is : ", user);
       return user;
     } catch (err) {
       console.log(err);
@@ -51,7 +48,6 @@ const DatabaseMth = {
       const user = await User.findById(Id)
         .populate("sendmessage")
         .populate("receivemessage");
-      console.log("getUserbyId user is : ", user);
       return user;
     } catch (err) {
       console.log(err);
@@ -85,6 +81,64 @@ const DatabaseMth = {
       return updatedUser;
     } catch (error) {
       console.log("error is occured in updateById");
+      console.log(error);
+      return null;
+    }
+  },
+
+  //보낸 messageid와 userid를 받아서 message를 user의 발신함에 추가하는 역할을 한다.
+  AddSendMessage: async function (messageId, userId) {
+    try {
+      const user = await User.findById(userId);
+      user.sendmessage.push(messageId);
+      const result = await user.save();
+      return result;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  },
+
+  //받은 messageid와 userid를 받아서 message를 user의 수신함에 추가하는 역할을 한다.
+  AddReceiveMessage: async function (messageId, userId) {
+    try {
+      const user = await User.findById(userId);
+      user.receivemessage.push(messageId);
+      const result = await user.save();
+      return result;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  },
+
+  //해당 유저의 발신함에서 message를 id기반으로 삭제한다.
+  DeleteSendMessage: async function (messageId, userId) {
+    try {
+      const user = await User.findById(userId);
+      const messageifilter = user.sendmessage.filter(function (data) {
+        return String(data) !== String(messageId);
+      });
+      user.sendmessage = messageifilter;
+      const result = await user.save();
+      return result;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  },
+
+  //해당 유저의 수신함에서 message를 id기반으로 삭제한다.
+  DeleteReceiveMessage: async function (messageId, userId) {
+    try {
+      const user = await User.findById(userId);
+      const messageifilter = user.receivemessage.filter(function (data) {
+        return String(data) !== String(messageId);
+      });
+      user.sendmessage = messageifilter;
+      const result = await user.save();
+      return result;
+    } catch (error) {
       console.log(error);
       return null;
     }

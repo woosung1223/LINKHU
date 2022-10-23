@@ -18,7 +18,7 @@ const DatabaseMth = {
         const group = await Group.findById(groupId);
         console.log(group);
         group['members'].push(userId);
-        const result = group.save();
+        const result = await group.save();
         return result;
     } catch(error) {
         console.log("CreateMember is failed");

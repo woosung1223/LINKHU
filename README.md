@@ -65,3 +65,8 @@ LinKhu 1차 배포 목표 기능은 다음과 같습니다.
 LinKhu의 발전 방향은 정해져 있지 않습니다.
 
 여러분이 고민이 있고 그 고민을 해결할 수 있는 방향으로 앞으로 개발할 것입니다.
+
+## Contact
+김진우 - rlawlsdn316@gmail.com <br>
+최우성 - dntjd991223@naver.com <br>
+백승준 - tmdwns9913@gmail.com <br>

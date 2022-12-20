@@ -20,9 +20,11 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  sendmessage: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
+  receivemessage: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
   imageLoc: {
     type: String,
-  }
+  },
 });
 
 //Create, update등이 일어날 때 만약 document의 password값이 바뀌었을 경우에 해당 password를 hash해주는 함수

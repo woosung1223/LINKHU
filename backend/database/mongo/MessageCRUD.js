@@ -1,14 +1,13 @@
 const Message = require("./model/Message");
 
 const DatabaseMth = {
-  
-  CreateMessage: async function (data) {
+
+  createMessage: async function (data) {
     try {
       const message = await Message.create(data);
-      console.log("Making new Message is success");
       return message._id.toString();
     } catch (error) {
-      console.log("Making new Message is fail in CreateMessage");
+      console.log(error);
       return false;
     }
   },
@@ -16,19 +15,23 @@ const DatabaseMth = {
   getMessagebyId: async function (id) {
     try {
       const message = await Message.findById(id);
-      console.log("getMessagebyId message is : ", message);
       return message;
-    } catch (err) {
-      console.log(err);
-      return null;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
   },
  
   getMessagebyField: async function (field, data) {
-    const query = {};
-    query[field] = data;
-    const message = await Message.find(query);
-    return message;
+    try {
+      const query = {};
+      query[field] = data;
+      const message = await Message.find(query);
+      return message;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   },
 
   updateMessageById: async function (id, data) {
@@ -38,22 +41,20 @@ const DatabaseMth = {
       });
       return updatedMessage;
     } catch (error) {
-      console.log("error is occured in updateMessageById");
       console.log(error);
-      return null;
+      return ;
     }
   },
 
   deleteMessageById: async function (id) {
     try {
-      const data = await Message.findByIdAndDelete(id);
-      return true;
+      const deletedMessage = await Message.findByIdAndDelete(id);
+      return deletedMessage;
     } catch (error) {
-      console.log("error is occured in deleteMessagebyId", error);
+      console.log(error);
       return false;
     }
   },
-
 };
 
 module.exports = DatabaseMth;

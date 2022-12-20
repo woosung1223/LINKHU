@@ -1,63 +1,66 @@
 const Group = require("./model/Group");
 const User = require("./mongoDB");
+
 const DatabaseMth = {
  
-  CreateGroup: async function (groupData) {
-    // groupData에는 그룹명이 포함되어 있음
+  createGroup: async function (groupName) {
     try {
-      const group = await Group.create(groupData);
-      console.log("Making new group is success");
+      const group = await Group.create(groupName);
       return group._id.toString();
     } catch (error) {
-      console.log("Making new Group is fail in CreateGroup");
+      console.log(error);
       return false;
     }
   },
-  CreateMemberById: async function (groupId, userId) {
+
+  createMemberById: async function (groupId, userId) {
     try {
         const group = await Group.findById(groupId);
-        console.log(group);
         group['members'].push(userId);
         const result = await group.save();
         return result;
     } catch(error) {
-        console.log("CreateMember is failed");
-        return null;
+        console.log(error);
+        return false;
     }
   },
+
   getGroupById: async function (id) {
     try {
       const group = await Group.findById(id);
-      console.log("getGroupbyId user is : ", group);
       return group;
-    } catch (err) {
-      console.log(err);
-      return null;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
   },
  
   getGroupByField: async function (field, data) {
-    const query = {};
-    query[field] = data;
-    const group = await Group.find(query);
-    return group;
+    try {
+      const query = {};
+      query[field] = data;
+      const group = await Group.find(query);
+      return group;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   },
 
   getMembersById: async function(id) {
     try {
+      const result = await Group.find({_id : id});
+      const member_list = [];
+      const old_member_list = result[0]['members'];
 
-        const result = await Group.find({_id : id});
-        const member_list = [];
-        const old_member_list = result[0]['members'];
-        for (let i = 0; i < old_member_list.length; i++) {
-            member_list.push(old_member_list[i].toString());
-        }
+      for (let member in old_member_list) {
+        member_list.push(member.toString());
+      }
+
         return member_list;
-
     } catch (error) {
-        console.log('error ocurred in getMembersById');
-        console.log('error');
-        return null;
+        console.log(error);
+        return false;
     }
   },
   updateGroupById: async function (id, groupData) {
@@ -67,18 +70,17 @@ const DatabaseMth = {
       });
       return updatedGroup;
     } catch (error) {
-      console.log("error is occured in updateGroupById");
       console.log(error);
-      return null;
+      return false;
     }
   },
 
   deleteGroupById: async function (id) {
     try {
-      const data = await Group.findByIdAndDelete(id);
-      return true;
+      const deletedGroup = await Group.findByIdAndDelete(id);
+      return deletedGroup;
     } catch (error) {
-      console.log("error is occured in deleteUserbyGroup", error);
+      console.log(error);
       return false;
     }
   },

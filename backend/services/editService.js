@@ -1,5 +1,5 @@
 import response from "../config/response";
-import Database from "../database/mongo/userCRUD";
+import Database from "../database/mongo/CRUD/userCRUD";
 import s3 from "./S3Serivce";
 const editService = {
   saveInfo: async function (userAttribute) {

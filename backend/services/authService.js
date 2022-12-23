@@ -1,4 +1,4 @@
-import Database from "../database/mongo/userCRUD";
+import Database from "../database/mongo/CRUD/userCRUD";
 import bcrypt from "bcrypt";
 import response from "../config/response";
 const AuthService = {

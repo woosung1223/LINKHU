@@ -1,5 +1,5 @@
-const Group = require("./model/Group");
-const User = require("./UserCRUD");
+const Group = require("../model/Group");
+const User = require("../model/User");
 
 const DatabaseMth = {
  

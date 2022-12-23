@@ -37,7 +37,7 @@ const DatabaseMth = {
   updateMessageById: async function (id, data) {
     try {
       const updatedMessage = await Message.findByIdAndUpdate(id, data, {
-        new: true,
+      new: true,
       });
       return updatedMessage;
     } catch (error) {

@@ -1,5 +1,5 @@
 const Group = require("./model/Group");
-const User = require("./mongoDB");
+const User = require("./UserCRUD");
 
 const DatabaseMth = {
  
